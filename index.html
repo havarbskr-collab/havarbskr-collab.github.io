@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Havar Baskara · Data Science & Big Data</title>
+<meta name="description" content="Portfolio de Havar, étudiante en Master 2 Big Data et Business Intelligence à l'USPN.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Outfit:wght@300;400;500;600&family=Big+Shoulders+Display:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  /* Rose et noir dans les deux modes : c'est l'identité du site */
+  :root {
+    --bg: #0D0B0E;
+    --surface: #18141A;
+    --surface-2: #211B23;
+    --line: #2F2731;
+    --text: #F6EEF2;
+    --muted: #A996A2;
+    --pink: #F4B6C8;
+    --pink-deep: #E5869F;
+    --on-pink: #2A1520;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0D0B0E; --surface: #18141A; --text: #F6EEF2; color-scheme: dark; }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Outfit", system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  a { color: var(--pink); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; border-radius: 6px; }
+  h1, h2, h3 { font-family: "Unbounded", sans-serif; font-weight: 500; line-height: 1.15; }
+
+  /* Halo rose en haut à droite */
+  .glow {
+    position: fixed; top: -18rem; right: -12rem; width: 40rem; height: 40rem;
+    border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(244,182,200,.35) 0%, rgba(244,182,200,.08) 45%, transparent 70%);
+  }
+
+  main { min-width: 0; }
+  .layout {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;
+    display: grid; grid-template-columns: 300px 1fr; gap: 3rem;
+  }
+
+  /* Carte profil */
+  .card {
+    position: sticky; top: 2rem; align-self: start;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 28px; padding: 1.75rem;
+  }
+  .card .name { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 1.4rem; margin: 0 0 1.25rem; }
+  .photo {
+    aspect-ratio: 1; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(160deg, var(--pink), var(--pink-deep));
+    display: grid; place-items: center; margin-bottom: 1.5rem;
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo .initial { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 5rem; color: var(--on-pink); }
+  .card dl { margin: 0 0 1.5rem; }
+  .card dt { color: var(--muted); font-size: .85rem; }
+  .card dd { margin: 0 0 .9rem; font-weight: 500; }
+  .socials { display: flex; gap: .6rem; margin-bottom: 1.5rem; }
+  .socials a {
+    width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--surface-2); border: 1px solid var(--line); color: var(--text);
+  }
+  .socials a:hover { color: var(--pink); border-color: var(--pink); }
+  .socials svg { width: 18px; height: 18px; }
+
+  .btn {
+    display: inline-block; text-align: center; padding: .85rem 1.5rem; border-radius: 999px;
+    font-weight: 600; text-decoration: none; border: 1.5px solid var(--pink); transition: background .2s, color .2s;
+  }
+  .btn.pink { background: var(--pink); color: var(--on-pink); }
+  .btn.pink:hover { background: var(--pink-deep); border-color: var(--pink-deep); }
+  .btn.ghost { color: var(--pink); }
+  .btn.ghost:hover { background: var(--pink); color: var(--on-pink); }
+  .card .btn { width: 100%; }
+
+  /* Contenu */
+  nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 4rem; }
+  nav ul { list-style: none; display: flex; gap: .4rem; margin: 0; padding: .35rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; }
+  nav ul a { display: block; padding: .45rem 1rem; border-radius: 999px; color: var(--muted); text-decoration: none; font-weight: 500; font-size: .95rem; }
+  nav ul a:hover, nav ul a.active { background: var(--surface-2); color: var(--text); }
+
+  .hero { min-height: 52vh; display: flex; flex-direction: column; justify-content: center; }
+  .hero .hello { color: var(--pink); font-weight: 500; margin: 0 0 1rem; }
+  .hero h1 { font-size: clamp(2.2rem, 5.2vw, 4rem); margin: 0 0 1.5rem; max-width: 15ch; }
+  .hero p { color: var(--muted); max-width: 36rem; font-size: 1.2rem; margin: 0 0 2rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+  section { padding: 5rem 0 0; }
+  section > h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin: 0 0 .5rem; }
+  section > .sub { color: var(--muted); margin: 0 0 2.5rem; }
+
+  /* Tableau des départs en rose */
+  .board { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 1.5rem; overflow-x: auto; margin-bottom: 2.5rem; }
+  .board-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .75rem; }
+  .board-head span { font-family: "Big Shoulders Display", sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--pink); }
+  .board-head time { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .board table { width: 100%; border-collapse: collapse; min-width: 540px; }
+  .board th { text-align: left; font-weight: 400; color: var(--muted); font-size: .85rem; padding: 0 .75rem .5rem; }
+  .board td { font-family: "Big Shoulders Display", sans-serif; font-weight: 600; font-size: 1.45rem; padding: .55rem .75rem; border-top: 1px solid var(--line); }
+  .board tr.row { cursor: pointer; }
+  .board tr.row:hover td { background: var(--surface-2); }
+  .board a { color: inherit; text-decoration: none; }
+  .live { color: var(--pink); }
+  .done { color: var(--muted); }
+
+  .project { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 2rem; margin-bottom: 1.25rem; scroll-margin-top: 2rem; }
+  .project .meta { color: var(--pink); font-weight: 500; font-size: .95rem; margin: 0 0 .5rem; }
+  .project h3 { font-size: 1.25rem; margin: 0 0 1rem; }
+  .project p { color: var(--muted); max-width: 44rem; margin: 0 0 .75rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 1.25rem 0 0; list-style: none; }
+  .tags li { background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: .2rem .85rem; font-size: .9rem; }
+
+  .result { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem; margin: 1.25rem 0; padding: 1rem 1.25rem; background: var(--surface-2); border-left: 3px solid var(--pink); border-radius: 0 14px 14px 0; }
+  .result strong { font-family: "Unbounded", sans-serif; font-weight: 500; font-size: 1.35rem; color: var(--pink); }
+  .result span { color: var(--muted); font-size: .95rem; }
+  .others-title { font-size: 1.2rem; margin: 3rem 0 1.25rem; }
+  .box p.small { color: var(--muted); font-size: .95rem; margin: 0; }
+  .box .tags { margin-top: .75rem; }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 1.75rem; }
+  .box h3 { font-size: 1rem; margin: 0 0 1.25rem; color: var(--pink); }
+  .timeline { list-style: none; padding: 0; margin: 0; }
+  .timeline li { padding: 0 0 1.25rem 1.25rem; border-left: 1.5px solid var(--line); position: relative; }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li::before { content: ""; position: absolute; left: -6px; top: .5rem; width: 10px; height: 10px; border-radius: 50%; background: var(--pink); }
+  .timeline strong { display: block; font-weight: 500; }
+  .timeline span { color: var(--muted); font-size: .95rem; }
+  .plain { list-style: none; padding: 0; margin: 0; }
+  .plain li { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+  .plain li:last-child { border-bottom: 0; }
+  .plain li span { color: var(--muted); text-align: right; }
+
+  .contact-box { background: linear-gradient(135deg, var(--pink), var(--pink-deep)); color: var(--on-pink); border-radius: 28px; padding: 3rem 2rem; }
+  .contact-box h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); margin: 0 0 1rem; }
+  .contact-box p { max-width: 34rem; margin: 0 0 2rem; font-weight: 400; }
+  .contact-box .btn { border-color: var(--on-pink); }
+  .contact-box .btn.dark { background: var(--on-pink); color: var(--pink); }
+  .contact-box .btn.line { color: var(--on-pink); }
+  .contact-box .btn.line:hover { background: var(--on-pink); color: var(--pink); }
+
+  footer { padding: 3rem 0 1rem; color: var(--muted); font-size: .9rem; }
+
+  @media (max-width: 900px) {
+    main { min-width: 0; }
+  .layout { grid-template-columns: 1fr; gap: 2rem; }
+    .card { position: static; display: grid; grid-template-columns: 120px 1fr; gap: 0 1.25rem; align-items: start; }
+    .card .name { grid-column: 1 / -1; }
+    .photo { margin: 0; }
+    .card dl, .card .socials, .card .btn { grid-column: 2; }
+    .card .btn { grid-column: 1 / -1; }
+    nav { margin-bottom: 2rem; }
+    nav .btn { display: none; }
+    .hero { min-height: auto; padding: 1rem 0; }
+  }
+  @media (max-width: 520px) {
+    nav ul a { padding: .45rem .7rem; font-size: .85rem; }
+    .card { grid-template-columns: 1fr; }
+    .card dl, .card .socials { grid-column: 1; }
+    .photo { width: 140px; margin-bottom: 1.25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+
+<div class="layout">
+
+  <aside class="card" aria-label="Profil">
+    <p class="name">Havar Baskara</p>
+    <div class="photo">
+      <!-- Mets ta photo dans le repo sous le nom photo.jpg. Sans photo, l'initiale s'affiche. -->
+      <img src="photo.jpg" alt="Photo de Havar" onerror="this.remove(); document.querySelector('.photo').insertAdjacentHTML('beforeend','<span class=initial>H</span>')">
+    </div>
+    <dl>
+      <dt>Spécialité</dt>
+      <dd>Big Data et Business Intelligence</dd>
+      <dt>Basée en</dt>
+      <dd>Arnouville (95)</dd>
+      <dt>Recherche</dt>
+      <dd>Stage en data analyse, data science ou business analyse</dd>
+    </dl>
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/havar-baskara-131054347" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4v11H3zm7 0h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1v5.36h-4v-4.75c0-1.13-.02-2.6-1.58-2.6-1.59 0-1.83 1.24-1.83 2.52v4.83h-4z"/></svg>
+      </a>
+      <a href="https://github.com/havarbskr-collab" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.26.8-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+      </a>
+      <a href="mailto:havarbskr@gmail.com" aria-label="E-mail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </a>
+    </div>
+    <a class="btn pink" href="#contact">Me contacter</a>
+  </aside>
+
+  <main>
+    <nav aria-label="Navigation principale">
+      <ul>
+        <li><a href="#" class="active">Accueil</a></li>
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#parcours">Parcours</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <p class="hello">Bonjour, je suis Havar Baskara</p>
+      <h1>Je transforme des données en décisions.</h1>
+      <p>Étudiante en Master 2 Big Data et Business Intelligence à l'Université Sorbonne Paris Nord. Je cherche un stage en lien avec mon master : data analyst, data scientist ou business analyst.</p>
+      <div class="actions">
+        <a class="btn pink" href="#projets">Voir mes projets</a>
+        <a class="btn ghost" href="https://github.com/havarbskr-collab">Voir mon GitHub</a>
+      </div>
+    </header>
+
+    <section id="projets">
+      <h2>Projets</h2>
+      <p class="sub">Clique sur une ligne du tableau pour voir le détail.</p>
+
+      <div class="board" role="region" aria-label="Tableau des projets">
+        <div class="board-head"><span>Départs</span><time id="clock"></time></div>
+        <table>
+          <thead><tr><th scope="col">Vol</th><th scope="col">Projet</th><th scope="col">Outil</th><th scope="col">Statut</th></tr></thead>
+          <tbody>
+            <tr class="row" data-target="p10">
+              <td class="flap" data-text="HV01">HV01</td>
+              <td><a href="#p10" class="flap" data-text="SUPPORT CLIENT IA">SUPPORT CLIENT IA</a></td>
+              <td class="flap" data-text="SCIKIT-LEARN">SCIKIT-LEARN</td>
+              <td class="flap done" data-text="TERMINÉ">TERMINÉ</td>
+            </tr>
+            <tr class="row" data-target="p5">
+              <td class="flap" data-text="HV02">HV02</td>
+              <td><a href="#p5" class="flap" data-text="APPEL NUMÉRIQUE">APPEL NUMÉRIQUE</a></td>
+              <td class="flap" data-text="POSTGRESQL">POSTGRESQL</td>
+              <td class="flap done" data-text="TERMINÉ">TERMINÉ</td>
+            </tr>
+            <tr class="row" data-target="p7">
+              <td class="flap" data-text="HV03">HV03</td>
+              <td><a href="#p7" class="flap" data-text="ANALYSE COMMERCIALE">ANALYSE COMMERCIALE</a></td>
+              <td class="flap" data-text="SQL">SQL</td>
+              <td class="flap done" data-text="TERMINÉ">TERMINÉ</td>
+            </tr>
+            <tr class="row" data-target="p6">
+              <td class="flap" data-text="HV04">HV04</td>
+              <td><a href="#p6" class="flap" data-text="TENSION TEMPS RÉEL">TENSION TEMPS RÉEL</a></td>
+              <td class="flap" data-text="KAFKA">KAFKA</td>
+              <td class="flap done" data-text="TERMINÉ">TERMINÉ</td>
+            </tr>
+            <tr class="row" data-target="p8">
+              <td class="flap" data-text="HV05">HV05</td>
+              <td><a href="#p8" class="flap" data-text="NOTATION YUKA">NOTATION YUKA</a></td>
+              <td class="flap" data-text="PYTHON">PYTHON</td>
+              <td class="flap done" data-text="TERMINÉ">TERMINÉ</td>
+            </tr>
+            <tr class="row" data-target="p2">
+              <td class="flap" data-text="HV06">HV06</td>
+              <td><a href="#p2" class="flap" data-text="TRANSPARENCE CLIMAT">TRANSPARENCE CLIMAT</a></td>
+              <td class="flap" data-text="PYTHON">PYTHON</td>
+              <td class="flap done" data-text="TERMINÉ">TERMINÉ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <article class="project" id="p10">
+        <p class="meta">Projet personnel, data et IA</p>
+        <h3>Un tri automatique des tickets du service client par IA</h3>
+        <p>Pour un distributeur informatique fictif recevant 500 tickets par mois, j'ai d'abord analysé les délais du service client : un ticket sur six est envoyé à la mauvaise équipe, et ces tickets ne respectent le délai de réponse promis que dans 32 % des cas, contre 82 % pour les autres.</p>
+        <p>J'ai ensuite entraîné un modèle (TF-IDF et régression logistique) qui lit le message du client et propose l'équipe et l'urgence. Il ne trie seul que les tickets dont il est sûr et laisse les messages ambigus à un agent. Un reporting Excel est généré automatiquement. Données simulées.</p>
+        <div class="result"><strong>88 % triés seuls</strong><span>avec 98,8 % de bonnes orientations : environ 30 heures d'agent libérées par mois et des tickets mal orientés qui passent de 16 % à 6 %</span></div>
+        <p><a href="https://github.com/havarbskr-collab/support-client-ia">Voir le code sur GitHub</a></p>
+        <ul class="tags"><li>Python</li><li>scikit-learn</li><li>NLP</li><li>pandas</li><li>Reporting Excel</li><li>Mesure d'impact</li></ul>
+      </article>
+
+      <article class="project" id="p5">
+        <p class="meta">MasterLab USPN 2025-2026, projet de groupe (8 étudiants, février à juin 2026)</p>
+        <h3>Un portail d'appel numérique pour remplacer la feuille d'émargement papier</h3>
+        <p>Du cahier des charges à la maquette, nous avons conçu une solution web et mobile de gestion des présences avec 4 interfaces (étudiant, enseignant, administration, équipe data). Les étudiants pointent avec un QR code qui se renouvelle toutes les 15 secondes pour empêcher la fraude, et des règles métier attribuent automatiquement un statut (présent, retard, demi-absence, absence justifiée).</p>
+        <p>Côté données : modèle relationnel PostgreSQL, indicateurs d'assiduité avec seuils d'alerte à trois niveaux, et un tableau de bord Power BI synchronisé toutes les 30 secondes. Le tout pensé pour le RGPD (contrôle d'accès par rôle, chiffrement, journal d'audit).</p>
+        <p>Mon rôle : lead technique et architecte solution. J'ai porté les choix d'architecture et fait le lien avec les membres côté conseil du groupe, puis présenté le projet devant le jury.</p>
+        <div class="result"><strong>36 écrans</strong><span>maquettés pour 4 profils d'utilisateurs, émargement en moins de 3 secondes</span></div>
+        <ul class="tags"><li>Cahier des charges</li><li>PostgreSQL</li><li>Power BI</li><li>Architecture</li><li>RGPD</li></ul>
+      </article>
+
+      <article class="project" id="p7">
+        <p class="meta">SQL et Python, analyse métier</p>
+        <h3>Qui sont les clients et les produits qui font le chiffre d'affaires ?</h3>
+        <p>Sur la base commerciale ClassicModels (clients, commandes, produits, paiements), j'ai mené une analyse exploratoire puis des requêtes SQL avancées : moyenne mobile du chiffre d'affaires avec des fonctions de fenêtre, hiérarchie des employés par CTE récursif, segmentation des clients VIP et rapport pivot des ventes par gamme et par trimestre. Les résultats sont ensuite visualisés en Python.</p>
+        <p>Chaque résultat est traduit en recommandation : fidéliser les clients qui portent une grande part du chiffre d'affaires, anticiper les stocks avant le pic de ventes du quatrième trimestre.</p>
+        <p><a href="https://github.com/havarbskr-collab/classicmodels-analysis">Voir le code sur GitHub</a></p>
+        <ul class="tags"><li>SQL</li><li>Fonctions de fenêtre</li><li>Python</li><li>pandas</li><li>matplotlib</li></ul>
+      </article>
+
+      <article class="project" id="p6">
+        <p class="meta">Streaming de données</p>
+        <h3>Surveiller la pression artérielle en temps réel</h3>
+        <p>Un producteur Python envoie des mesures au format FHIR dans Kafka. Le consumer ne garde que les anomalies, les indexe dans Elasticsearch, et un tableau de bord Kibana classe les patients par gravité. Données entièrement synthétiques.</p>
+        <div class="result"><strong>&gt; 140 / 90 mmHg</strong><span>seuils d'alerte d'hypertension, hypotension sous 90 / 60</span></div>
+        <p><a href="https://github.com/havarbskr-collab/blood_pressure-project">Voir le code sur GitHub</a></p>
+        <ul class="tags"><li>Python</li><li>Kafka</li><li>Elasticsearch</li><li>Kibana</li><li>Docker</li></ul>
+      </article>
+
+      <article class="project" id="p8">
+        <p class="meta">Économétrie qualitative, projet de groupe (3 étudiants, M1)</p>
+        <h3>Qu'est-ce qui fait la note Yuka d'un produit alimentaire ?</h3>
+        <p>Sur 1 000 produits notés de Mauvais à Excellent, nous avons expliqué la note par la composition nutritionnelle. J'étais chargée de la partie méthodologie et estimation : choix d'un logit ordonné (la note est une variable ordonnée), estimation de trois spécifications et sélection du modèle complet par AIC et BIC.</p>
+        <div class="result"><strong>× 3</strong><span>de chances d'être dans une meilleure catégorie pour un produit bio, à composition égale ; ÷ 3 pour un produit ultra-transformé</span></div>
+        <p><a href="https://github.com/pallagueye1-orso/jeu_donnees_YUKA">Voir le code sur GitHub</a> (projet de groupe)</p>
+        <ul class="tags"><li>Python</li><li>statsmodels</li><li>Logit ordonné</li><li>AIC / BIC</li></ul>
+      </article>
+
+      <article class="project" id="p2">
+        <p class="meta">Finance durable, modèle logit, projet de groupe</p>
+        <h3>Pourquoi certaines grandes entreprises européennes publient-elles leurs données climat, et d'autres non ?</h3>
+        <p>Sur 552 entreprises du STOXX 600, nous avons modélisé la probabilité qu'une entreprise réponde au questionnaire climat du CDP selon sa performance environnementale, sa gouvernance et sa taille : modèles logit simple, complet, réduit et avec interaction.</p>
+        <div class="result"><strong>× 3</strong><span>de chances de répondre au CDP avec un comité RSE, à score environnemental égal (24 % des entreprises sans comité répondent, contre 64 % avec)</span></div>
+        <p><a href="https://github.com/havarbskr-collab/cdp-project">Voir le code sur GitHub</a> (projet de groupe)</p>
+        <ul class="tags"><li>Python</li><li>statsmodels</li><li>Régression logistique</li><li>Données ESG</li></ul>
+      </article>
+
+      <h3 class="others-title">Autres travaux</h3>
+      <div class="cols">
+        <div class="box">
+          <h3>Risques climatiques et refus de crédit</h3>
+          <p class="small">MCO avec erreurs robustes (HC1), après imputation KNN et réduction de dimension par ACP, en comparant l'effet selon le profil des emprunteurs.</p>
+          <div class="result"><strong>+1,1 pt</strong><span>de refus pour motif dette/revenu en zone exposée</span></div>
+          <ul class="tags"><li>R</li><li>MCO</li><li>ACP</li></ul>
+        </div>
+        <div class="box">
+          <h3>Aide au développement et croissance en Afrique</h3>
+          <p class="small">Régression linéaire multiple avec la batterie complète de tests : normalité des résidus, hétéroscédasticité, VIF, RESET de Ramsey et sélection par AIC.</p>
+          <ul class="tags"><li>Python</li><li>statsmodels</li></ul>
+        </div>
+        <div class="box">
+          <h3>Qu'est-ce qui fait gagner un match de NFL ?</h3>
+          <p class="small">Analyse exploratoire de plus de 5 000 matchs (1999-2025) : avantage du terrain, météo, quarterbacks et pronostics des bookmakers. Projet de groupe, <a href="https://github.com/BEN-Muhammad/nfl-data-project">code sur GitHub</a>.</p>
+          <div class="result"><strong>57 %</strong><span>des matchs gagnés à domicile</span></div>
+          <ul class="tags"><li>Python</li><li>pandas</li></ul>
+        </div>
+        <div class="box">
+          <h3>Prévision de l'énergie solaire en France</h3>
+          <p class="small">Un ARIMA saisonnier sert de référence, puis un ARIMAX ajoute l'ensoleillement, le prix des énergies fossiles et la capacité installée. Données mensuelles 2010-2023, tests ADF et KPSS, test sur les 12 derniers mois.</p>
+          <div class="result"><strong>33 % → 12 %</strong><span>d'erreur de prévision (MAPE)</span></div>
+          <ul class="tags"><li>R</li><li>ARIMA</li><li>ARIMAX</li></ul>
+        </div>
+        <div class="box">
+          <h3>Word2Vec sur deux corpus : films et avis Amazon</h3>
+          <p class="small">Même paramétrage sur 2,4 M et 17,3 M de mots, puis évaluation par voisins proches, similarité, analogies de Google et projection ACP. Le meilleur score vient surtout des comparatifs, très présents dans les avis.</p>
+          <div class="result"><strong>29,6 % contre 9,5 %</strong><span>d'analogies correctes, avis contre films</span></div>
+          <ul class="tags"><li>Python</li><li>Gensim</li><li>NLP</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="parcours">
+      <h2>Parcours</h2>
+      <p class="sub">Formation, compétences et langues.</p>
+      <div class="cols">
+        <div class="box">
+          <h3>Formation</h3>
+          <ul class="timeline">
+            <li><strong>Master 2 Big Data et BI</strong><span>Université Sorbonne Paris Nord, en cours</span></li>
+            <li><strong>Master 1 Big Data et BI</strong><span>Université Sorbonne Paris Nord</span></li>
+            <li><strong>Licence Économie et gestion</strong><span>Université Sorbonne Paris Nord, parcours Économie et finance des entreprises en L3</span></li>
+          </ul>
+        </div>
+        <div class="box">
+          <!-- Garde uniquement ce que tu maîtrises vraiment -->
+          <h3>Compétences</h3>
+          <ul class="plain">
+            <li>Python <span>pandas, statsmodels, Gensim</span></li>
+            <li>R <span>économétrie, séries temporelles</span></li>
+            <li>SQL <span>MySQL, PostgreSQL</span></li>
+            <li>Big Data <span>Spark, Hadoop, Kafka</span></li>
+            <li>Pipelines de données <span>Elasticsearch, Kibana</span></li>
+            <li>BI et maquettage <span>Power BI, Figma</span></li>
+            <li>Statistiques <span>MCO, logit, ACP, ARIMA</span></li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Langues</h3>
+          <ul class="plain">
+            <li>Français <span>natif</span></li>
+            <li>Anglais <span>B2</span></li>
+            <li>Turc <span>natif</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-box">
+        <h2>Travaillons ensemble</h2>
+        <p>Je cherche un stage de fin d'études en data analyse, data science ou business analyse. Le plus simple pour me joindre, c'est par e-mail ou sur LinkedIn.</p>
+        <div class="actions">
+          <a class="btn dark" href="mailto:havarbskr@gmail.com">M'écrire un e-mail</a>
+          <a class="btn line" href="https://www.linkedin.com/in/havar-baskara-131054347">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2026 Havar Baskara</footer>
+  </main>
+</div>
+
+<script>
+  const clock = document.getElementById('clock');
+  const tick = () => clock.textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  tick(); setInterval(tick, 30000);
+
+  document.querySelectorAll('tr.row').forEach(row => {
+    row.addEventListener('click', () => document.getElementById(row.dataset.target).scrollIntoView());
+  });
+
+  // Effet "volets" du tableau, une seule fois au chargement
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    document.querySelectorAll('.flap').forEach((el, i) => {
+      const target = el.dataset.text;
+      let frame = 0;
+      const stop = 12 + i * 2;
+      const timer = setInterval(() => {
+        el.textContent = target.split('').map((c, k) =>
+          c === ' ' || frame > stop - (target.length - k) * 0.3 ? c : chars[Math.floor(Math.random() * chars.length)]
+        ).join('');
+        if (++frame > stop) { el.textContent = target; clearInterval(timer); }
+      }, 45);
+    });
+  }
+</script>
+</body>
+</html>
